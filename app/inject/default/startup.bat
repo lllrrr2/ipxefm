@@ -14,7 +14,7 @@ set xshow=echo ...
 ) else (
 set say=start "" "X:\Program Files\WinXShell.exe" -ui -jcfg wxsUI\UI_led.zip -text
 :::set say=start "" "X:\Program Files\WinXShell.exe" -ui -jcfg wxsUI\UI_led.zip -wait 5 -scroll -top -text
-set show=start "" "X:\Program Files\WinXShell.exe" -ui -jcfg wxsUI\UI_show.zip -text
+set show=start "" "X:\Program Files\WinXShell.exe" -ui -jcfg wxsUI\UI_SHOW\main.jcfg -top -text
 set xsay=start "" "X:\Program Files\WinXShell.exe" -code "QuitWindow(nil,'UI_LED')"
 set xshow=start "" "X:\Program Files\WinXShell.exe" -code "QuitWindow(nil,'UI_show')"
 set wait=%root%\pecmd.exe wait 800
@@ -124,12 +124,13 @@ if "%n%" == "15" goto getipbuok
 goto checkip
 ::获取ip成功
 :getipok
+for /f "tokens=4 delims=." %%a in ("%myip%") do set lastip=%%a
 rem 修改动态ip地址为固定，防止dhcp服务器崩溃时无法传输文件
 if exist "X:\Program Files\wxsUI\UI_AppStore\PEwtip.lua" start "" /w "X:\Program Files\wxsUI\UI_AppStore\PEwtip.lua"
 %xsay%
 %xshow%
 ::显示ip-newbeepe中要注释掉下面一行
-:::%show% %myip% 
+%show% %lastip% 
 %say% "获取IP成功！本机ip:%myip% 检测硬件并上报中......" %font%
 %wait%
 echo .>%myip%
@@ -149,7 +150,7 @@ goto init
 %wait%
 %xsay%
 ::显示ip-newbeepe中要注释掉下面一行
-::%show% %myip% 
+%show% %lastip% 
 goto init
 ::::::::::::::检测IP脚本结束::::::::::::::
 
